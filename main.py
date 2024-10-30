@@ -11,5 +11,12 @@ vgsales = pd.read_csv("data/vgsales.csv")
 
 st.dataframe(vgsales)
 
+names = vgsales['Name'].unique().sort_values(by=['Name'])
+
+print(names)
+
+st.dataframe(names)
+
+
 
 

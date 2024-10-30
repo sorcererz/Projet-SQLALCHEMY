@@ -13,7 +13,6 @@ class Publisher(Base):
     name = Column(String(255), unique=True)
 
     # Relation avec Game (One-to-Many)
-    games = relationship("Game", back_populates="publisher")
 
 class Genre(Base):
     __tablename__ = 'genres'
@@ -21,7 +20,6 @@ class Genre(Base):
     name = Column(String(255), unique=True)
 
     # Relation avec Game (One-to-Many)
-    games = relationship("Game", back_populates="genre")
 
 class Platform(Base):
     __tablename__ = 'platforms'
@@ -35,6 +33,7 @@ class Game(Base):
     __tablename__ = 'games'
     id = Column(Integer, primary_key=True)
     name = Column(String(255), unique=True)
+    year = Column(Integer)
     publisher_id = Column(Integer, ForeignKey('publishers.id'))
     genre_id = Column(Integer, ForeignKey('genres.id'))
     platform_id = Column(Integer, ForeignKey('platforms.id'))
@@ -51,7 +50,6 @@ class Sales(Base):
     __tablename__ = 'sales'
     id = Column(Integer, primary_key=True)
     game_id = Column(Integer, ForeignKey('games.id'))
-    year = Column(Integer)
     na_sales = Column(Float)    # Ventes en Amérique du Nord
     eu_sales = Column(Float)    # Ventes en Europe
     jp_sales = Column(Float)    # Ventes au Japon
