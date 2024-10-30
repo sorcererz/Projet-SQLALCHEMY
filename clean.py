@@ -19,3 +19,32 @@ print(missing_values)
 
 vgsales.to_csv('data/vgsales.csv', index=False)
 
+
+def checkColumn(df, columnName, type):
+
+    incorrectValues = df[~df[columnName].apply(lambda x: isinstance(x, type) or pd.isnull(x))]
+
+    if incorrectValues.empty:
+        return "Les valeurs sont du bon type"
+    else:
+        return "Les valeurs ne sont PAS du bon type"
+
+print(vgsales['Year'].head().tolist())
+print(checkColumn(vgsales, "Year", int))
+print(vgsales["Year"].dtypes)
+
+# Remplace les années null par des 0
+vgsales['Year'].fillna(0, inplace=True)
+
+# Transforme le type des années en int
+vgsales['Year'] = vgsales['Year'].astype(int)
+
+# Remplace les années de nombre 0 par des null
+vgsales['Year'] = vgsales['Year'].replace(0, None)
+
+print("")
+print(vgsales['Year'].head().tolist())
+print(checkColumn(vgsales, "Year", int))
+print(vgsales["Year"].dtypes)
+
+vgsales.to_csv('data/vgsales.csv', index=False)
