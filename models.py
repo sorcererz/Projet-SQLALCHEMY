@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship, sessionmaker
 
 # Initialisation
 Base = declarative_base()
-engine = create_engine('sqlite:///data/vgsales.db')
 
 # Définition des tables
 class Publisher(Base):
@@ -29,7 +28,7 @@ class Game(Base):
     genre_id = Column(Integer, ForeignKey('genres.id'), nullable=False)
 
     # Relation avec Genre
-    genre = relationship("Genre", back_populates="games")
+    # genre = relationship("Genre", back_populates="games")
 
 # Ajout de la relation inverse pour Genre (biderectionnelle)
 # Genre.games = relationship("Game", back_populates="genre")
@@ -47,12 +46,14 @@ class Sales(Base):
     game_id = Column(Integer, ForeignKey('games.id'), nullable=False)
 
     # Relations avec Game, Platform, et Publisher
-    game = relationship("Game", back_populates="sales")
-    platform = relationship("Platform")
-    publisher = relationship("Publisher")
+    # game = relationship("Game", back_populates="sales")
+    # platform = relationship("Platform")
+    # publisher = relationship("Publisher")
 
 # Relation inverse entre Game et Sales (bidirectionnelle)
 # Game.sales = relationship("Sales", back_populates="game")
 
 # Créer les tables dans la base de données
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
+
+myPublisher = Publisher()
