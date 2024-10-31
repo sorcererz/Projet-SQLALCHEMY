@@ -24,7 +24,3 @@ df_names = pd.DataFrame(names_nparray, columns=['Name']).sort_values(by=['Name']
 st.dataframe(df_names)
 
 create_data = cp_data.createData()
-
-
-
-
