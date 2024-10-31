@@ -27,7 +27,7 @@ class Platform(Base):
     name = Column(String(255), unique=True)
 
     # Relation avec Game (One-to-Many)
-    games = relationship("Game", back_populates="platform")
+    # games = relationship("Game", back_populates="platform")
 
 class Game(Base):
     __tablename__ = 'games'
@@ -44,7 +44,7 @@ class Game(Base):
     platform = relationship("Platform", back_populates="games")
     
     # Relation avec Sales (One-to-Many)
-    sales = relationship("Sales", back_populates="game")
+    # sales = relationship("Sales", back_populates="game")
 
 class Sales(Base):
     __tablename__ = 'sales'
@@ -56,7 +56,11 @@ class Sales(Base):
     other_sales = Column(Float) # Ventes dans les autres régions
 
     # Relation avec Game (Many-to-One)
-    game = relationship("Game", back_populates="sales")
+    # game = relationship("Game", back_populates="sales")
 
-# Créer les tables dans la base de données
-Base.metadata.create_all(engine)
+# # Créer les tables dans la base de données
+# Base.metadata.create_all(engine)
+
+testGenre = Genre()
+testGenre.name = 'toto'
+print(testGenre.__dict__)
