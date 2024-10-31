@@ -19,7 +19,7 @@ names_nparray = np.array(namesArray)
 
 df_names = pd.DataFrame(names_nparray, columns=['Name']).sort_values(by=['Name'])
 # df = namesDF
-print(df_names)
+# print(df_names)
 
 st.dataframe(df_names)
 

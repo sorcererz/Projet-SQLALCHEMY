@@ -12,7 +12,8 @@ from sqlalchemy.orm import Session
 import os
 
 try: 
-    os.remove('data/vgsales.db')
+    os.remove('./data/vgsales.db')
+    print('remove database')
 except:
     print('no database sqlite')
 
@@ -33,48 +34,39 @@ vgsales = pd.read_csv("data/vgsales.csv")
 
 st.dataframe(vgsales)
 
+############################################################## names in streamlit
+
 namesArray = vgsales['Name'].unique()
-# names = names.sort_values(by=['Name'])
+    
 names_nparray = np.array(namesArray)
 
 df_names = pd.DataFrame(names_nparray, columns=['Name']).sort_values(by=['Name'])
-# df = namesDF
 st.text('Games names')
-print(df_names)
 
 st.dataframe(df_names)
 
 ############################################################## add Genre in database
 genreArray = vgsales['Genre'].unique()
-
-genre_array = np.array(genreArray)
-df_genre = pd.DataFrame(genre_array,columns=['Genre']).sort_values(by=['Genre'])
-
-st.text('Games genres')
-st.dataframe(df_genre)
-
-for index, row in df_genre.iterrows():
-    myGenre = models.Genre(name=row['Genre'])
+for genre in genreArray:
+    myGenre = models.Genre(name=genre)
     session.add(myGenre)
 
 session.commit()
 
 ############################################################## add Platform in database
 
-# platformArray = vgsales['Platform'].unique()
+platformArray = vgsales['Platform'].unique()
+for plateform in platformArray:
+    myPlatform = models.Platform(name=plateform)
+    session.add(myPlatform)
 
-# for platform in platformArray:
-#     myPlatform = models.Platform(name=platform)
+session.commit()
 
-# platform_array = np.array(platformArray)
+############################################################## add Publisher in database
 
-# df_genre = pd.DataFrame(genre_array,columns=['Genre']).sort_values(by=['Genre'])
+publisherArray = vgsales['Publisher'].unique()
+for publisher in publisherArray:
+    myPublisher = models.Publisher(name=publisher)
+    session.add(myPublisher)
 
-# st.text('Games genres')
-# st.dataframe(df_genre)
-
-# for index, row in df_genre.iterrows():
-#     myGenre = models.Genre(name=row['Genre'])
-#     session.add(myGenre)
-
-# session.commit()
+session.commit()
