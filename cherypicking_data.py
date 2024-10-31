@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import models as models
+import sqlite3
 from models import Genre, Sales, Game, Platform, Publisher, Base
 # from sqlalchemy.orm import session
 from sqlalchemy import create_engine
@@ -50,8 +51,10 @@ genreArray = vgsales['Genre'].unique()
 for genre in genreArray:
     myGenre = models.Genre(name=genre)
     session.add(myGenre)
-
 session.commit()
+
+df_genre = pd.read_sql_table('genres','sqlite:///data/vgsales.db')
+
 
 ############################################################## add Platform in database
 
@@ -62,6 +65,8 @@ for plateform in platformArray:
 
 session.commit()
 
+df_platform = pd.read_sql_table('platforms','sqlite:///data/vgsales.db')
+
 ############################################################## add Publisher in database
 
 publisherArray = vgsales['Publisher'].unique()
@@ -70,3 +75,20 @@ for publisher in publisherArray:
     session.add(myPublisher)
 
 session.commit()
+
+df_publisher = pd.read_sql_table('publishers','sqlite:///data/vgsales.db')
+
+
+############################################################## add Game in database
+
+# gameArray = vgsales['Name','Genre']
+df_game = pd.DataFrame(vgsales, columns=['Name', 'Genre'])
+
+for index_game, row_game in df_game.iterrows():
+    for index_genre, row_genre in df_genre.iterrows():
+        if row_game['Genre'] == row_genre['name']:
+            myGame = models.Game(name=row_game['Name'], genre_id=row_genre['id'])
+            session.add(myGame)
+session.commit()
+
+
