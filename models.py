@@ -32,7 +32,7 @@ class Game(Base):
     genre = relationship("Genre", back_populates="games")
 
 # Ajout de la relation inverse pour Genre (biderectionnelle)
-Genre.games = relationship("Game", back_populates="genre")
+# Genre.games = relationship("Game", back_populates="genre")
 
 class Sales(Base):
     __tablename__ = 'sales'
@@ -52,7 +52,7 @@ class Sales(Base):
     publisher = relationship("Publisher")
 
 # Relation inverse entre Game et Sales (bidirectionnelle)
-Game.sales = relationship("Sales", back_populates="game")
+# Game.sales = relationship("Sales", back_populates="game")
 
 # Créer les tables dans la base de données
 Base.metadata.create_all(engine)
