@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import cherypicking_data as cp_data
+from cherypicking_data import createData
+
 
 # Titre de l'application
 st.title('Mon Projet SQL Alchemy')
@@ -23,4 +24,5 @@ df_names = pd.DataFrame(names_nparray, columns=['Name']).sort_values(by=['Name']
 
 st.dataframe(df_names)
 
-create_data = cp_data.createData()
+create_data = createData()
+create_data.createDB()
