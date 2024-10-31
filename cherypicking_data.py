@@ -13,9 +13,10 @@ from sqlalchemy.orm import Session
 import os
 
 class createData():
+    print('ici')
     try: 
         print('toto')
-        os.remove('./data/vgsales.db')
+        os.remove('data/vgsales.db')
         print('remove database')
     except:
         print('no database sqlite')
@@ -24,7 +25,7 @@ class createData():
     session = Session(bind=engine)
 
 
-    st.title('Mon Projet SQL Alchemy - récupération des dinnées pour les transférer dans la bse de données')
+    # st.title('Mon Projet SQL Alchemy - récupération des dinnées pour les transférer dans la bse de données')
 
     # Nettoyer et préparer les données avec Pandas
     # Charger le fichier "vgsales.csv" dans un DataFrame
@@ -91,33 +92,38 @@ class createData():
             if row_game['Genre'] == row_genre['name']:
                 # print(row_genre['id'])
                 # print(row_game['Name'])
-                myGame = models.Game(name=row_game['Name'], genre_id=row_genre['id'])
+                myGame = models.Game(name=row_game['Name'], genre_id=int(row_genre['id']))
+                # print(myGame.__dict__)
                 session.add(myGame)
                 # print('add game')
     session.commit()
 
+    df_game = pd.read_sql_table('games','sqlite:///data/vgsales.db')
+
 
     ############################################################## add Sales in database
 
-    # df_sale = pd.DataFrame(vgsales, columns=['Other_Sales', 'NA_Sales', 'EU_Sales', 'JP_Sales', 'Year', 'Platform', 'Publisher', 'Name'])
+    df_sale = pd.DataFrame(vgsales, columns=['Other_Sales', 'NA_Sales', 'EU_Sales', 'JP_Sales', 'Year', 'Platform', 'Publisher', 'Name'])
 
-    # for index_sale, row_sale in df_sale.iterrows():
-    #     mySale = models.Sales()
-    #     mySale.eu_sales = row_sale['EU_Sales']
-    #     mySale.jp_sales = row_sale['JP_Sales']
-    #     mySale.na_sales = row_sale['NA_Sales']
-    #     mySale.other_sales = row_sale['Other_Sales']
-    #     mySale.year_sale = row_sale['Year']
+    for index_sale, row_sale in df_sale.iterrows():
+        mySale = models.Sales()
+        mySale.eu_sales = row_sale['EU_Sales']
+        mySale.jp_sales = row_sale['JP_Sales']
+        mySale.na_sales = row_sale['NA_Sales']
+        mySale.other_sales = row_sale['Other_Sales']
+        mySale.year_sale = row_sale['Year']
         
-    #     for index_platform, row_platform in df_platform.iterrows():
-    #         if row_sale['Platform'] == row_platform['name']:
-    #             mySale.platform_id = row_platform['id']
-    #     for index_publisher, row_publisher in df_publisher.iterrows():
-    #         if row_sale['Publisher'] == row_publisher['name']:
-    #             mySale.publisher_id = row_publisher['id']
-    #     for index_game, row_game in df_game.iterrows():
-    #         if row_sale['Name'] == row_game['name']:
-    #             mySale.game_id = row_game['id']
-    #     session.add(mySale)
-    # session.commit()
+        for index_platform, row_platform in df_platform.iterrows():
+            if row_sale['Platform'] == row_platform['name']:
+                mySale.platform_id = row_platform['id']
+        for index_publisher, row_publisher in df_publisher.iterrows():
+            if row_sale['Publisher'] == row_publisher['name']:
+                mySale.publisher_id = row_publisher['id']
+        for index_game, row_game in df_game.iterrows():
+            if row_sale['Name'] == row_game['name']:
+                mySale.game_id = row_game['id']
+        # print(mySale.__dict__)
+        session.add(mySale)
+    session.commit()
+print('fini')
 
